@@ -4,7 +4,14 @@
 
 Questa dashboard interattiva permette di esplorare i risultati dell'analisi spaziale delle performance delle imprese italiane attraverso diverse visualizzazioni e filtri dinamici.
 
-## 🚀 Avvio Rapido
+## 🌐 Demo Online
+
+La dashboard è disponibile online all'indirizzo:
+**[https://pietromaietta.streamlit.app/](https://pietromaietta.streamlit.app/)**
+
+Non è necessaria alcuna installazione per utilizzare la versione online.
+
+## 🚀 Avvio Locale
 
 ### 1. Installazione delle dipendenze
 

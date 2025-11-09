@@ -79,7 +79,12 @@ Per controllare l'integrità degli output della pipeline (Sezioni 1-10), eseguir
 
 È disponibile una dashboard interattiva sviluppata con Streamlit per visualizzare e esplorare i risultati dell'analisi spaziale.
 
-### Installazione
+### 🌐 Demo Online
+
+La dashboard è accessibile online all'indirizzo:
+**[https://pietromaietta.streamlit.app/](https://pietromaietta.streamlit.app/)**
+
+### Installazione Locale
 
 1. Assicurarsi di avere Python 3.8+ installato
 2. Installare le dipendenze:

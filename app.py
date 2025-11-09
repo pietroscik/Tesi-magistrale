@@ -58,7 +58,10 @@ st.sidebar.markdown("---")
 st.sidebar.info(
     "**Tesi di Laurea Magistrale**\n\n"
     "Analisi Spaziale delle Performance delle Imprese Italiane\n\n"
-    "**Autore:** Pietro Maietta"
+    "**Autore:** Pietro Maietta\n\n"
+    "---\n\n"
+    "🌐 **Dashboard Online:**\n"
+    "[pietromaietta.streamlit.app](https://pietromaietta.streamlit.app/)"
 )
 
 # ============================================================================
