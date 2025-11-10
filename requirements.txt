@@ -9,3 +9,5 @@ matplotlib>=3.9
 kaleido>=0.2.1
 pypdf2>=3
 pydeck>=0.9
+# opzionale: preview PDF
+pymupdf>=1.24
