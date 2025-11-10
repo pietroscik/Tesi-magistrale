@@ -9,16 +9,6 @@ ROOT_DIR = APP_DIR.parent                                   # repo root
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 # ---------------------------------------------------------------
-# bootstrap leggero per sicurezza su Cloud
-import sys, subprocess, importlib
-def _ensure(spec, import_name=None):
-    name = import_name or spec.split("==")[0].split(">=")[0].split("<")[0]
-    try:
-        importlib.import_module(name)
-    except ImportError:
-        subprocess.check_call([sys.executable, "-m", "pip", "install", spec])
-        importlib.invalidate_caches()
-_ensure("plotly>=5.24,<6", "plotly")
 
 import streamlit as st
 import pandas as pd
@@ -28,6 +18,22 @@ from gui.utils import DATA_DIR, MAPS_DIR, load_csv, get_available_pdfs, coerce_c
 st.set_page_config(page_title="Analisi Spaziale ISP – Overview", page_icon="📊", layout="wide", initial_sidebar_state="expanded")
 inject_css()
 page_header("Analisi Spaziale ISP – Overview", "v1.0")
+
+import importlib.util
+missing = []
+for mod in ("plotly", "matplotlib"):
+    if importlib.util.find_spec(mod) is None:
+        missing.append(mod)
+
+with st.expander("🔎 Diagnostica avvio"):
+    st.write("Mancanti:", missing or "Nessuno")
+    st.write("DATA_DIR esiste:", DATA_DIR.exists())
+    st.write("MAPS_DIR esiste:", MAPS_DIR.exists())
+
+if missing:
+    st.error("Pacchetti mancanti: " + ", ".join(missing) +
+             ". Controlla `requirements.txt` in root e i log 'Processed dependencies'.")
+    st.stop()
 
 st.sidebar.info(
     "**Tesi di Laurea Magistrale**\n\n"
