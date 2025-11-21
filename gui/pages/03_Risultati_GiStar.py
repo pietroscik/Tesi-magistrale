@@ -1,5 +1,5 @@
 import streamlit as st, pandas as pd
-from gui.utils import load_dataset, coerce_categories, text_filter, download_df_button, page_header, inject_css
+from gui.utils import DATA_DIR, load_dataset, coerce_categories, text_filter, download_df_button, page_header, inject_css
 
 st.set_page_config(page_title="03 – Risultati Gi*", page_icon="🔥", layout="wide")
 inject_css()
@@ -9,9 +9,9 @@ st.markdown("""
 L'analisi **Gi\\*** (Getis-Ord) evidenzia hotspot e coldspot significativi.
 """)
 
-df = coerce_categories(load_dataset("riepilogo_cluster_GI_completo.csv"))
+df = coerce_categories(load_dataset("cluster_GI_aggregati.xlsx"))
 if df is None:
-    st.error("File 'riepilogo_cluster_GI_completo.csv' non trovato."); st.stop()
+    st.error("File 'cluster_GI_aggregati.xlsx' non trovato."); st.stop()
 
 st.markdown("---")
 st.subheader("🔍 Filtri")
@@ -50,3 +50,17 @@ else:
     fig.update_layout(title="Distribuzione Hotspot Gi* per Subset", xaxis_title="Subset", yaxis_title="Numero",
                       barmode="group", height=520, hovermode="x unified", template="plotly_white")
     st.plotly_chart(fig, use_container_width=True)
+
+st.markdown("---")
+st.subheader("📥 Download Dati Aggregati")
+xlsx_path = DATA_DIR / "cluster_GI_aggregati.xlsx"
+if xlsx_path.exists():
+    with open(xlsx_path, "rb") as f:
+        st.download_button(
+            "📥 Scarica Excel Aggregato (Gi*)",
+            f,
+            file_name="cluster_GI_aggregati.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+else:
+    st.warning("File Excel aggregato non trovato.")

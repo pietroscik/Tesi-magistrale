@@ -31,14 +31,25 @@ files_to_display = {
             "Coefficienti_robusti_HC3_full.csv",
             "Coefficienti_robusti_HC3_sample.csv",
             "risultati_modelli_dimensioni_stepwise.txt",
+            "stepwise_by_dimensione.xlsx",
+        ]
+    },
+    "Documentazione": {
+        "path": base_path,
+        "files": [
+            "sintesi ipotesi.xlsx",
         ]
     },
     "Log Analisi Spaziale": {
         "path": base_path / "05_analysis_spatial" / "05_logs",
         "files": [
+            "_REPORT_FINALE_MODELLI_MIGLIORI.txt",
+            "robustezza_e_riepiloghi_finali.txt",
             "analisi_dimensione_macroarea_borderfree.txt",
             "analisi_dimensione_macroarea.txt",
             "analisi_k_nazionale.txt",
+            "analisi_regressiva_dimensione_macroarea.txt",
+            "autocorrelazione_globale.txt",
         ]
     }
 }
@@ -52,8 +63,11 @@ for section, data in files_to_display.items():
         with st.expander(f"📄 {filename}"):
             if file_path.exists():
                 try:
-                    if file_path.suffix == ".csv":
+                    if file_path.suffix.lower() == ".csv":
                         df = pd.read_csv(file_path)
+                        st.dataframe(df)
+                    elif file_path.suffix.lower() == ".xlsx":
+                        df = pd.read_excel(file_path)
                         st.dataframe(df)
                     else:
                         content = file_path.read_text(encoding="utf-8")

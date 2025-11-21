@@ -1,5 +1,5 @@
 import streamlit as st
-from gui.utils import load_dataset, coerce_categories, text_filter, download_df_button, page_header, inject_css
+from gui.utils import DATA_DIR, load_dataset, coerce_categories, text_filter, download_df_button, page_header, inject_css
 
 st.set_page_config(page_title="05 – Modelli Econometrici", page_icon="📈", layout="wide")
 inject_css()
@@ -42,6 +42,9 @@ column_config = {
     "LogLik": st.column_config.NumberColumn("LogLik", format="%.2f", help="Log-Likelihood"),
     "p_value": st.column_config.NumberColumn("p-value", format="%.4e", help="Significatività statistica"),
     "RMSE": st.column_config.NumberColumn("RMSE", format="%.4f", help="Root Mean Square Error"),
+    "Moran_resid_p": st.column_config.NumberColumn("Moran Resid p", format="%.4e", help="P-value Moran sui residui"),
+    "BP_p": st.column_config.NumberColumn("BP p", format="%.4e", help="Breusch-Pagan p-value"),
+    "AD_p": st.column_config.NumberColumn("AD p", format="%.4e", help="Anderson-Darling p-value"),
 }
 
 st.dataframe(
@@ -63,8 +66,17 @@ if "AIC" in dfv.columns and dfv["AIC"].notna().any():
         st.plotly_chart(fig_aic, use_container_width=True)
 
     st.markdown("### 🔻 Top 20 per AIC (più basso = meglio)")
+    
+    # Filtra solo i modelli migliori (best_by_AIC == True/VERO)
+    if "best_by_AIC" in df_aic.columns:
+        # Gestione valori booleani o stringhe "VERO"/"FALSO"
+        mask_best = df_aic["best_by_AIC"].astype(str).str.upper().isin(["TRUE", "VERO", "1"])
+        df_top = df_aic[mask_best]
+    else:
+        df_top = df_aic
+
     st.dataframe(
-        df_aic.sort_values("AIC", ascending=True).head(20),
+        df_top.sort_values("AIC", ascending=True).head(20),
         use_container_width=True,
         hide_index=True,
         column_config={"AIC": st.column_config.NumberColumn(format="%.2f")}
@@ -76,3 +88,22 @@ if gwr_summary is not None:
     st.markdown("---")
     st.subheader("🗺️ GWR – Sommario")
     st.dataframe(gwr_summary, use_container_width=True)
+
+st.markdown("---")
+st.subheader("📥 Download Diagnostiche Complete")
+diagn_path = DATA_DIR / "diagn_summary.csv"
+if diagn_path.exists():
+    with open(diagn_path, "rb") as f:
+        st.download_button(
+            "📥 Scarica Diagnostiche (CSV)",
+            f,
+            file_name="diagn_summary.csv",
+            mime="text/csv"
+        )
+
+# Check for GWR residuals Moran
+gwr_moran = load_dataset("riepilogo_gwr_residui_moran.csv")
+if gwr_moran is not None and not gwr_moran.empty:
+    st.markdown("---")
+    st.subheader("🗺️ GWR – Moran sui Residui")
+    st.dataframe(gwr_moran, use_container_width=True)

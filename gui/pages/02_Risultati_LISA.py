@@ -1,5 +1,5 @@
 import streamlit as st, pandas as pd
-from gui.utils import load_dataset, coerce_categories, text_filter, download_df_button, page_header, inject_css
+from gui.utils import DATA_DIR, load_dataset, coerce_categories, text_filter, download_df_button, page_header, inject_css
 
 st.set_page_config(page_title="02 – Risultati LISA", page_icon="📍", layout="wide")
 inject_css()
@@ -10,9 +10,9 @@ L'analisi **LISA** (Local Indicators of Spatial Association) identifica cluster 
 - **High-High (HH)**, **Low-Low (LL)**, **High-Low (HL)**, **Low-High (LH)**
 """)
 
-df = coerce_categories(load_dataset("riepilogo_cluster_LISA_completo.csv"))
+df = coerce_categories(load_dataset("cluster LISA aggregati.xlsx"))
 if df is None:
-    st.error("File 'riepilogo_cluster_LISA_completo.csv' non trovato."); st.stop()
+    st.error("File 'cluster LISA aggregati.xlsx' non trovato."); st.stop()
 
 st.markdown("---")
 st.subheader("🔍 Filtri")
@@ -84,3 +84,26 @@ if variant == "Tutti" and "variante" in df.columns:
         figd = px.bar(dfd, x="Subset", y="Delta", color="Cluster", title="Δ Border − Strict per Subset", template="plotly_white")
         figd.update_layout(height=520, xaxis_tickangle=-30)
         st.plotly_chart(figd, use_container_width=True)
+
+st.markdown("---")
+st.subheader("🛡️ Robustezza: Accordo Strict vs Border")
+st.markdown("Indice di accordo (0-1) tra le classificazioni ottenute con le due matrici di pesi.")
+df_agree = coerce_categories(load_dataset("riepilogo_accordo_cluster_strict_vs_border.csv", sep=";", decimal=","))
+if df_agree is not None:
+    st.dataframe(df_agree, use_container_width=True)
+else:
+    st.info("Dati di accordo non disponibili.")
+
+st.markdown("---")
+st.subheader("📥 Download Dati Aggregati")
+xlsx_path = DATA_DIR / "cluster LISA aggregati.xlsx"
+if xlsx_path.exists():
+    with open(xlsx_path, "rb") as f:
+        st.download_button(
+            "📥 Scarica Excel Aggregato (LISA)",
+            f,
+            file_name="cluster_LISA_aggregati.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+else:
+    st.warning("File Excel aggregato non trovato.")

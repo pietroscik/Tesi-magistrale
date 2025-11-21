@@ -10,12 +10,20 @@ MAPS_DIR = ROOT / "05_analysis_spatial" / "02_maps"
 @st.cache_data(ttl=600)
 def load_dataset(filename: str, **kwargs) -> pd.DataFrame | None:
     fp = DATA_DIR / filename
-    if not fp.exists(): return None
+    if not fp.exists():
+        return None
     try:
-        return pd.read_csv(fp, **kwargs)
+        if fp.suffix.lower() == ".xlsx":
+            return pd.read_excel(fp, **kwargs)
+        else:
+            return pd.read_csv(fp, **kwargs)
+    except pd.errors.EmptyDataError:
+        return pd.DataFrame()
     except Exception:
-        # Fallback: try default if kwargs failed, or just return None
+        # Fallback
         try:
+            if fp.suffix.lower() == ".xlsx":
+                return pd.read_excel(fp)
             return pd.read_csv(fp)
         except Exception:
             return None

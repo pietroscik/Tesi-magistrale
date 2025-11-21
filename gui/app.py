@@ -46,7 +46,7 @@ st.sidebar.info(
 
 # Metriche generali
 with st.spinner("Caricamento metriche..."):
-    lisa_complete = coerce_categories(load_dataset("riepilogo_cluster_LISA_completo.csv"))
+    lisa_complete = coerce_categories(load_dataset("cluster LISA aggregati.xlsx"))
     model_detail  = coerce_categories(load_dataset("riepilogo_modello_dettaglio.csv", sep=";", decimal=","))
 
 n_subsets = int(lisa_complete["Subset"].nunique()) if isinstance(lisa_complete, pd.DataFrame) and "Subset" in lisa_complete.columns else 0
@@ -89,8 +89,8 @@ with colR:
 st.markdown("---")
 st.subheader("📁 Dataset disponibili (cartella 05_analysis_spatial/03_tables)")
 if DATA_DIR.exists():
-    csv_files = sorted([f.name for f in DATA_DIR.glob("*.csv")])
-    st.dataframe(pd.DataFrame({"file": csv_files}), use_container_width=True, hide_index=True) if csv_files else st.warning("Nessun CSV trovato.")
+    files = sorted([f.name for f in DATA_DIR.glob("*") if f.is_file() and f.suffix.lower() in [".csv", ".xlsx"]])
+    st.dataframe(pd.DataFrame({"file": files}), use_container_width=True, hide_index=True) if files else st.warning("Nessun file dati trovato.")
 else:
     st.error(f"Directory non trovata: {DATA_DIR}")
 
