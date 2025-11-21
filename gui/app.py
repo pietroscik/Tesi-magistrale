@@ -13,7 +13,7 @@ if str(ROOT_DIR) not in sys.path:
 import streamlit as st
 import pandas as pd
 from pathlib import Path
-from gui.utils import DATA_DIR, MAPS_DIR, load_csv, get_available_pdfs, coerce_categories, page_header, inject_css
+from gui.utils import DATA_DIR, MAPS_DIR, load_dataset, get_available_pdfs, coerce_categories, page_header, inject_css
 
 st.set_page_config(page_title="Analisi Spaziale ISP – Overview", page_icon="📊", layout="wide", initial_sidebar_state="expanded")
 inject_css()
@@ -46,8 +46,8 @@ st.sidebar.info(
 
 # Metriche generali
 with st.spinner("Caricamento metriche..."):
-    lisa_complete = coerce_categories(load_csv("riepilogo_cluster_LISA_completo.csv"))
-    model_detail  = coerce_categories(load_csv("riepilogo_modello_dettaglio.csv", sep=";", decimal=","))
+    lisa_complete = coerce_categories(load_dataset("riepilogo_cluster_LISA_completo.csv"))
+    model_detail  = coerce_categories(load_dataset("riepilogo_modello_dettaglio.csv", sep=";", decimal=","))
 
 n_subsets = int(lisa_complete["Subset"].nunique()) if isinstance(lisa_complete, pd.DataFrame) and "Subset" in lisa_complete.columns else 0
 n_models  = len(model_detail) if isinstance(model_detail, pd.DataFrame) else 0

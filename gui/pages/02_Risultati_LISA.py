@@ -1,5 +1,5 @@
 import streamlit as st, pandas as pd
-from gui.utils import load_csv, coerce_categories, text_filter, download_df_button, page_header, inject_css
+from gui.utils import load_dataset, coerce_categories, text_filter, download_df_button, page_header, inject_css
 
 st.set_page_config(page_title="02 – Risultati LISA", page_icon="📍", layout="wide")
 inject_css()
@@ -10,7 +10,7 @@ L'analisi **LISA** (Local Indicators of Spatial Association) identifica cluster 
 - **High-High (HH)**, **Low-Low (LL)**, **High-Low (HL)**, **Low-High (LH)**
 """)
 
-df = coerce_categories(load_csv("riepilogo_cluster_LISA_completo.csv"))
+df = coerce_categories(load_dataset("riepilogo_cluster_LISA_completo.csv"))
 if df is None:
     st.error("File 'riepilogo_cluster_LISA_completo.csv' non trovato."); st.stop()
 

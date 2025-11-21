@@ -1,5 +1,5 @@
 import streamlit as st
-from gui.utils import load_csv, coerce_categories, text_filter, download_df_button, page_header, inject_css
+from gui.utils import load_dataset, coerce_categories, text_filter, download_df_button, page_header, inject_css
 
 st.set_page_config(page_title="05 – Modelli Econometrici", page_icon="📈", layout="wide")
 inject_css()
@@ -9,8 +9,8 @@ st.markdown("""
 Confronto tra **OLS, SAR, SDM, GMM, GWR**. Valutazione con **AIC**, diagnostiche, robustezza (HC3, FDR).
 """)
 
-model_detail = coerce_categories(load_csv("riepilogo_modello_dettaglio.csv", sep=";", decimal=","))
-gwr_summary = coerce_categories(load_csv("riepilogo_regressivi.csv", sep=";", decimal=","))
+model_detail = coerce_categories(load_dataset("riepilogo_modello_dettaglio.csv", sep=";", decimal=","))
+gwr_summary = coerce_categories(load_dataset("riepilogo_regressivi.csv", sep=";", decimal=","))
 
 if model_detail is None:
     st.error("File 'riepilogo_modello_dettaglio.csv' non trovato."); st.stop()

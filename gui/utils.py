@@ -8,7 +8,7 @@ DATA_DIR = ROOT / "05_analysis_spatial" / "03_tables"
 MAPS_DIR = ROOT / "05_analysis_spatial" / "02_maps"
 
 @st.cache_data(ttl=600)
-def load_csv(filename: str, **kwargs) -> pd.DataFrame | None:
+def load_dataset(filename: str, **kwargs) -> pd.DataFrame | None:
     fp = DATA_DIR / filename
     if not fp.exists(): return None
     try:

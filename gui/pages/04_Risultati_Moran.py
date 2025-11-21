@@ -1,5 +1,5 @@
 import streamlit as st
-from gui.utils import load_csv, coerce_categories, text_filter, download_df_button, page_header, inject_css
+from gui.utils import load_dataset, coerce_categories, text_filter, download_df_button, page_header, inject_css
 
 st.set_page_config(page_title="04 – Indice di Moran", page_icon="🌍", layout="wide")
 inject_css()
@@ -12,7 +12,7 @@ st.markdown("""
 - vicino a 0: assenza di autocorrelazione
 """)
 
-df = coerce_categories(load_csv("moran_summary_all.csv", sep=";", decimal=","))
+df = coerce_categories(load_dataset("moran_summary_all.csv", sep=";", decimal=","))
 if df is None:
     st.error("File 'moran_summary_all.csv' non trovato."); st.stop()
 
