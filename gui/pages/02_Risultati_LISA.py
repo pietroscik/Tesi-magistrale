@@ -42,7 +42,15 @@ import plotly.express as px
 tab_table, tab_counts, tab_perc = st.tabs(["📋 Tabella", "📊 Counts (stacked)", "📊 % Composizione"])
 
 with tab_table:
-    st.dataframe(dfv, use_container_width=True)
+    # Configurazione colonne per conteggi e percentuali
+    lisa_config = {
+        "High-High": st.column_config.NumberColumn("High-High", format="%d", help="Cluster Alto-Alto"),
+        "Low-Low": st.column_config.NumberColumn("Low-Low", format="%d", help="Cluster Basso-Basso"),
+        "High-Low": st.column_config.NumberColumn("High-Low", format="%d", help="Outlier Alto-Basso"),
+        "Low-High": st.column_config.NumberColumn("Low-High", format="%d", help="Outlier Basso-Alto"),
+        "Not Significant": st.column_config.NumberColumn("Non Signif.", format="%d"),
+    }
+    st.dataframe(dfv, use_container_width=True, column_config=lisa_config)
 
 with tab_counts:
     fig = px.bar(dfv, x="Subset", y=cluster_cols, title="Cluster LISA per Subset (stacked)", template="plotly_white")

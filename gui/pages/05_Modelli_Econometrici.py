@@ -9,8 +9,8 @@ st.markdown("""
 Confronto tra **OLS, SAR, SDM, GMM, GWR**. Valutazione con **AIC**, diagnostiche, robustezza (HC3, FDR).
 """)
 
-model_detail = coerce_categories(load_csv("riepilogo_modello_dettaglio.csv"))
-gwr_summary = coerce_categories(load_csv("riepilogo_regressivo_gwr.csv"))
+model_detail = coerce_categories(load_csv("riepilogo_modello_dettaglio.csv", sep=";", decimal=","))
+gwr_summary = coerce_categories(load_csv("riepilogo_regressivi.csv", sep=";", decimal=","))
 
 if model_detail is None:
     st.error("File 'riepilogo_modello_dettaglio.csv' non trovato."); st.stop()
@@ -34,7 +34,21 @@ dfv = text_filter(dfv, "Cerca subset/area/modello...")
 
 st.markdown("---")
 st.subheader("📋 Dettaglio")
-st.dataframe(dfv, use_container_width=True)
+
+# Configurazione colonne per una migliore leggibilità
+column_config = {
+    "AIC": st.column_config.NumberColumn("AIC", format="%.2f", help="Akaike Information Criterion (minore è meglio)"),
+    "R2": st.column_config.NumberColumn("R²", format="%.4f", help="R-squared"),
+    "LogLik": st.column_config.NumberColumn("LogLik", format="%.2f", help="Log-Likelihood"),
+    "p_value": st.column_config.NumberColumn("p-value", format="%.4e", help="Significatività statistica"),
+    "RMSE": st.column_config.NumberColumn("RMSE", format="%.4f", help="Root Mean Square Error"),
+}
+
+st.dataframe(
+    dfv, 
+    use_container_width=True,
+    column_config=column_config
+)
 download_df_button(dfv, "modelli_filtrato.csv")
 
 st.markdown("---")

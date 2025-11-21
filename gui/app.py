@@ -47,7 +47,7 @@ st.sidebar.info(
 # Metriche generali
 with st.spinner("Caricamento metriche..."):
     lisa_complete = coerce_categories(load_csv("riepilogo_cluster_LISA_completo.csv"))
-    model_detail  = coerce_categories(load_csv("riepilogo_modello_dettaglio.csv"))
+    model_detail  = coerce_categories(load_csv("riepilogo_modello_dettaglio.csv", sep=";", decimal=","))
 
 n_subsets = int(lisa_complete["Subset"].nunique()) if isinstance(lisa_complete, pd.DataFrame) and "Subset" in lisa_complete.columns else 0
 n_models  = len(model_detail) if isinstance(model_detail, pd.DataFrame) else 0

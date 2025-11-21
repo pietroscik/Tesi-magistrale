@@ -1,0 +1,8 @@
+=== LOG: aggregazione_report_finali ===
+Data/Ora avvio: 2025-11-10 17:43:03 
+
+Avvio aggregazione dei report dei modelli migliori...
+indexing riepilogo_modello_dettaglio.csv [==] 104.92MB/s, eta:  0s                                                                  Trovati 19 modelli migliori da aggregare...
+
+=== Aggregazione completata. ===
+File creato: C:/Users/39329/OneDrive - Uniparthenope/tesi/Tesi Magistrale/Tesi-Magistrale_backup0/05_analysis_spatial/03_tables/_REPORT_FINALE_MODELLI_MIGLIORI.txt

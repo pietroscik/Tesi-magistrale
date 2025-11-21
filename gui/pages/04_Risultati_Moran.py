@@ -12,7 +12,7 @@ st.markdown("""
 - vicino a 0: assenza di autocorrelazione
 """)
 
-df = coerce_categories(load_csv("moran_summary_all.csv"))
+df = coerce_categories(load_csv("moran_summary_all.csv", sep=";", decimal=","))
 if df is None:
     st.error("File 'moran_summary_all.csv' non trovato."); st.stop()
 
@@ -32,7 +32,18 @@ dfv = text_filter(dfv, "Cerca subset...")
 
 st.markdown("---")
 st.subheader("📋 Tabella")
-st.dataframe(dfv, use_container_width=True)
+
+# Configurazione colonne per Moran I e p-value
+moran_config = {
+    "Moran_I_strict": st.column_config.NumberColumn("Moran I (Strict)", format="%.4f"),
+    "Moran_I_border": st.column_config.NumberColumn("Moran I (Border)", format="%.4f"),
+    "p_strict": st.column_config.NumberColumn("p-value (Strict)", format="%.4e"),
+    "p_border": st.column_config.NumberColumn("p-value (Border)", format="%.4e"),
+    "z_strict": st.column_config.NumberColumn("z-score (Strict)", format="%.2f"),
+    "z_border": st.column_config.NumberColumn("z-score (Border)", format="%.2f"),
+}
+
+st.dataframe(dfv, use_container_width=True, column_config=moran_config)
 download_df_button(dfv, "moran_filtrato.csv")
 
 st.markdown("---")

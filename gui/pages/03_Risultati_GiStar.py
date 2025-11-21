@@ -21,7 +21,19 @@ dfv = text_filter(dfv, "Cerca subset/area/dimensione...")
 
 st.markdown("---")
 st.subheader("📋 Tabella")
-st.dataframe(dfv, use_container_width=True)
+
+# Configurazione colonne per conteggi
+gi_config = {
+    "Hotspot 99%": st.column_config.NumberColumn("Hotspot 99%", format="%d"),
+    "Hotspot 95%": st.column_config.NumberColumn("Hotspot 95%", format="%d"),
+    "Hotspot 90%": st.column_config.NumberColumn("Hotspot 90%", format="%d"),
+    "Coldspot 99%": st.column_config.NumberColumn("Coldspot 99%", format="%d"),
+    "Coldspot 95%": st.column_config.NumberColumn("Coldspot 95%", format="%d"),
+    "Coldspot 90%": st.column_config.NumberColumn("Coldspot 90%", format="%d"),
+    "Not Significant": st.column_config.NumberColumn("Non Signif.", format="%d"),
+}
+
+st.dataframe(dfv, use_container_width=True, column_config=gi_config)
 download_df_button(dfv, "gi_filtrato.csv")
 
 st.markdown("---")

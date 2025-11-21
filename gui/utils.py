@@ -8,13 +8,17 @@ DATA_DIR = ROOT / "05_analysis_spatial" / "03_tables"
 MAPS_DIR = ROOT / "05_analysis_spatial" / "02_maps"
 
 @st.cache_data(ttl=600)
-def load_csv(filename: str) -> pd.DataFrame | None:
+def load_csv(filename: str, **kwargs) -> pd.DataFrame | None:
     fp = DATA_DIR / filename
     if not fp.exists(): return None
     try:
-        return pd.read_csv(fp, engine="pyarrow")
+        return pd.read_csv(fp, **kwargs)
     except Exception:
-        return pd.read_csv(fp)
+        # Fallback: try default if kwargs failed, or just return None
+        try:
+            return pd.read_csv(fp)
+        except Exception:
+            return None
 
 @st.cache_data(ttl=600)
 def get_available_pdfs() -> list[str]:
